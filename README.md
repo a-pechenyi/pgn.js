@@ -1,0 +1,1 @@
+Parses PGN into well traversable JavaScript object.

@@ -1,0 +1,23 @@
+{
+  "author": "Artem Pechenyi <pechkinator@gmail.com>",
+  "name": "pgn.js",
+  "description": "JavaScript PGN parser",
+  "keywords": [
+    "pgn",
+    "chess"
+  ],
+  "version": "0.1.0",
+  "preferGlobal": false,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pechkin/pgn.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pechkin/pgn.js/issues"
+  },
+  "main": "lib/pgn.js",
+  "devDependencies": {
+    "jison": "*"
+  },
+  "optionalDependencies": {}
+}
