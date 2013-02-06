@@ -75,7 +75,11 @@ Tag
     ;
 
 MoveText
-    : MoveList GameTerminator
+    : GameTerminator EOF
+        {$$ = [[], $1]}
+    | GameTerminator
+        {$$ = [[], $1]}
+    | MoveList GameTerminator
         {$$ = [$1, $2]}
     | MoveList GameTerminator EOF
         {$$ = [$1, $2]}
