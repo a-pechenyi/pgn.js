@@ -9,17 +9,21 @@ piece [RNBKQ]
 
 %%
 
+\s*\{[^\}]*\}\s*                        return 'COMMENTARY' /* grab commentaries with surrounding whitespaces */
+\s*";"[^\n]*\s*                         return 'COMMENTARY'
 \s+                                     /* skip whitespaces */
 \"(?:'\\'[\\"]|[^\\"])*\"               yytext = yytext.substr(1,yyleng-2); return 'STRING'
 "1/2-1/2"                               return 'DRAW'
 "1-0"                                   return 'WHITE_WINS'
 "0-1"                                   return 'BLACK_WINS'
-(?:[0-9]|[1-9][0-9]+)\b                 return 'INTEGER'
-"{"[^\}]*"}"                            return 'COMMENTARY'
-";"[^\n]*                               return 'COMMENTARY'
 "O-O-O"                                 return 'QCASTLING'
 "O-O"                                   return 'KCASTLING'
-{piece}?{file}?{rank}?x?{file}{rank}(?:"="[RNBQ])?(?:[+#]|[?!]{1,2})? return 'SAN'
+"0-0-0"                                 return 'QCASTLING'
+"0-0"                                   return 'KCASTLING'
+(?:[0-9]|[1-9][0-9]+)\b                 return 'INTEGER'
+
+
+{piece}?{file}?{rank}?x?{file}{rank}(?:"="[RNBQ])?(?:(?:\+(?=$|[^-]))|"#")? return 'SAN'
 "."                                     return '.'
 "*"                                     return '*'
 "["                                     return '['
@@ -28,7 +32,31 @@ piece [RNBKQ]
 ")"                                     return ')'
 "<"                                     return '<'
 ">"                                     return '>'
-\$[0-3]+                                return 'NAG'
+"+-"                                    return 'NAG'
+"-+"                                    return 'NAG'
+"!!"                                    return 'NAG'
+"!?"                                    return 'NAG'
+"?!"                                    return 'NAG'
+"??"                                    return 'NAG'
+"!"                                     return "NAG"
+"?"                                     return "NAG"
+"‼"                                     return "NAG"
+"⁇"                                     return "NAG"
+"⁉"                                     return "NAG"
+"⁈"                                     return "NAG"
+"□"                                     return "NAG"
+"="                                     return "NAG"
+"∞"                                     return "NAG"
+"⩲"                                     return "NAG"
+"⩱"                                     return "NAG"
+"±"                                     return "NAG"
+"∓"                                     return "NAG"
+"⨀"                                     return "NAG"
+"⟳"                                     return "NAG"
+"→"                                     return "NAG"
+"↑"                                     return "NAG"
+"⇆"                                     return "NAG"
+\$[1-9][0-9]{0,2}                       return "NAG"
 [0-9A-Za-z][0-9A-Za-z_+#=:-]*           return 'SYMBOL'
 <<EOF>>                                 return 'EOF'
 .                                       return 'INVALID'
@@ -101,6 +129,8 @@ Move
     | COMMENTARY
         {$$ = {type: 'commentary', commentary: $1}}
     | RAV
+    | NAG
+        {$$ = {type: 'nag', value: $1}}
     ;
 
 NumberedMove
